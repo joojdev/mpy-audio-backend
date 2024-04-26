@@ -1,2 +1,4 @@
 pydub
 flask
+openai
+python-dotenv

@@ -1,6 +1,6 @@
 from flask import Flask, request
-from pydub import AudioSegment
-import os
+from gpt import generate_speech_answer
+import json
 
 app = Flask(__name__)
 
@@ -12,37 +12,26 @@ def homepage():
 
     return index
 
-@app.route('/convert', methods=['POST'])
-def convert_audio():
-    if 'file' not in request.files:
-        return "No file part", 400
-    
-    file = request.files['file']
-    if file.filename == '':
-        return "No selected file", 400
-    
-    try:
-        audio = AudioSegment.from_file(file)
-        audio = audio.set_frame_rate(8000).set_sample_width(1).set_channels(1)
+@app.post('/prompt')
+def convert_text_to_audio():
+    text = request.json.get('text')
 
-        file = open('audio.wav', 'wb')
-        audio.export(file, format="wav")
+    print(f' USER > {text}')
+
+    if not text:
+        return "No text provided", 400
+
+    try:
+        generate_speech_answer(text)
+
+        file = open('audio.wav', 'rb')
+        audio = file.read()
         file.close()
 
-        return 'Success!', 200
+        return audio, 200
     except Exception as e:
+        print(e)
         return str(e), 500
 
-@app.get('/audio.wav')
-def get_audio():
-    if os.path.exists('audio.wav'):
-        audio = open('audio.wav', 'rb')
-        content = audio.read()
-        audio.close()
-
-        return content
-    else:
-        return 'File not found!', 404
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

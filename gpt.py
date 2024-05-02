@@ -15,6 +15,7 @@ def generate_speech_answer(prompt):
     model="gpt-3.5-turbo",
     messages=[
       {"role": "system", "content": "Seu nome é ROB, você é um robô muito brincalhão!"},
+      # {"role": "system", "content": "Your name is Robby, and you are an educational robot."},
       {"role": "user", "content": prompt}
     ],
     max_tokens=180
@@ -34,5 +35,4 @@ def generate_speech_answer(prompt):
 
   prepare_audio(temp_filename)
 
-  os.remove(temp_filename)
-  return content
+  return temp_filename

@@ -2,3 +2,6 @@ pydub
 flask
 openai
 python-dotenv
+librosa
+scipy
+noisereduce

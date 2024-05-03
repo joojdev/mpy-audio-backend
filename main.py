@@ -32,7 +32,7 @@ def convert_text_to_audio():
 
         return audio, 200
     except Exception as e:
-        print(e)
+        print(str(e))
         return str(e), 500
 
 if __name__ == '__main__':

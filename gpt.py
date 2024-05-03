@@ -25,7 +25,7 @@ def generate_speech_answer(prompt):
   print(f' GPT > {content}')
 
   with client.audio.speech.with_streaming_response.create(
-      model='tts-1',
+      model='tts-1-hd',
       voice='alloy',
       speed=1,
       response_format='wav',

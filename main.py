@@ -1,6 +1,5 @@
 from flask import Flask, request
 from gpt import generate_speech_answer
-import json
 import os
 
 app = Flask(__name__)

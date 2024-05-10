@@ -2,16 +2,11 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 from audio import prepare_audio
-from datetime import datetime
-import re
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_speech_answer(prompt):
-  timestamp = int(datetime.timestamp(datetime.now()))
-  temp_filename = f'temp_output-{timestamp}.wav'
-
   text_response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
@@ -25,16 +20,6 @@ def generate_speech_answer(prompt):
   content = text_response.choices[0].message.content
   print(f' GPT > {content}')
 
+  audio_file = prepare_audio(content)
 
-  with client.audio.speech.with_streaming_response.create(
-    model='tts-1-hd',
-    voice='alloy',
-    speed=0.85,
-    response_format='wav',
-    input=content
-  ) as voice_response:
-    voice_response.stream_to_file(temp_filename)
-
-  prepare_audio(temp_filename)
-
-  return temp_filename
+  return audio_file, text_response.usage

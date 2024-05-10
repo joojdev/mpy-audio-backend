@@ -4,3 +4,4 @@ openai
 python-dotenv
 scipy
 soundfile
+py-espeak-ng

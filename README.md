@@ -1,3 +1,3 @@
 # mpy-audio-backend
 
-É necessário FFMPEG.
+É necessário FFMPEG e espeak-ng.
